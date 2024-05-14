@@ -45,9 +45,7 @@ jobs:
           result=$(sam publish --template .aws-sam/packaged.yaml)
           echo "$result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+' | head -n 1)
-          echo "arn: $arn"
           arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]')
-          echo "arn_clean: $arn_clean"
           echo "application_arn=$arn_clean" >> "$GITHUB_OUTPUT"
 
       - name: Share Application
