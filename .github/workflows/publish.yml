@@ -46,8 +46,9 @@ jobs:
           echo "Publish Result: $result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
           echo "Extracted ARN: $arn"
-          arn_trimmed=$(echo $arn | xargs)
-          echo "application_arn=$arn_trimmed" >> "$GITHUB_OUTPUT"
+          arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g')
+          echo "Cleaned ARN: $arn_clean"
+          echo "application_arn=$arn_clean" >> "$GITHUB_OUTPUT"
 
       - name: Test Output
         run: |
