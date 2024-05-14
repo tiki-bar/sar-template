@@ -44,7 +44,7 @@ jobs:
           sam package --output-template-file .aws-sam/packaged.yaml
           result=$(sam publish --template .aws-sam/packaged.yaml)
           echo "$result"
-          arn=$(echo "$result" | grep -oP 'published-applications/arn:aws:serverlessrepo:[^ ]+')
+          arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+' | head -n 1)
           echo "arn: $arn"
           arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]')
           echo "arn_clean: $arn_clean"
