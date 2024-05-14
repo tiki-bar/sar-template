@@ -6,6 +6,7 @@ on:
 
 env:
   AWS_REGION: "us-east-2"
+  VERSION: 0.0.1
 
 jobs:
   Publish:
@@ -40,7 +41,7 @@ jobs:
           result=$(sam publish --template .aws-sam/packaged.yaml)
           echo "Publish Result: $result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
-          echo "application=$arn" >> $GITHUB_OUTPUT
+          echo "application=$arn" >> "$GITHUB_OUTPUT"
 
       - name: Test Output
         run: |
