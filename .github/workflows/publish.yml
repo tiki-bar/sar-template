@@ -17,11 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: AWS Credentials
+      - name: Assume OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_IDENTITY_ID }}:role/GitHubOidc
           aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Assume Artifacts Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubOidc
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: true
+          role-chaining: true
 
       - name: Publish Application
         id: publish
