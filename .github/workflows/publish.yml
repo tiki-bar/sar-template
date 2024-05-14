@@ -50,6 +50,7 @@ jobs:
 
       - name: Share Application
         run: |
+          echo "Application ARN: ${{ steps.publish.outputs.application_arn }}"
           aws serverlessrepo put-application-policy \
           --application-id ${{ steps.publish.outputs.application_arn }} \
           --statements Principals=*,PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
