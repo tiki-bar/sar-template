@@ -37,13 +37,14 @@ jobs:
         run: |
           sam build
           sam package --output-template-file .aws-sam/packaged.yaml
-          echo "result=$(sam publish --template .aws-sam/packaged.yaml)" >> $GITHUB_OUTPUT
+          result = $(sam publish --template .aws-sam/packaged.yaml)
+          echo "$result"
+          arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
+          echo "application=$arn" >> $GITHUB_OUTPUT
 
       - name: Test Output
         run: |
-          echo "Publish Result: ${{ steps.publish.outputs.result }}"
-          echo "ARN???"
-          echo "${{ steps.publish.outputs.result }}" | grep -oP 'arn:aws:serverlessrepo:[^ ]+'
+          echo "ARN: ${{ steps.publish.outputs.application }}"
 
 #      - name: Update Policy
 #        run: |
