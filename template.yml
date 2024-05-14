@@ -12,7 +12,7 @@ Metadata:
     ReadmeUrl: README.md
     Labels: ['sar', 'example']
     HomePageUrl: https://github.com/tiki-bar/sar-template
-    SemanticVersion: 0.0.1
+    SemanticVersion: ${Version}
     SourceCodeUrl: https://github.com/tiki-bar/sar-template
 
 Resources:

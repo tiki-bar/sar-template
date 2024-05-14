@@ -33,6 +33,10 @@ jobs:
           mask-aws-account-id: true
           role-chaining: true
 
+      - name: Set Version
+        run: |
+          sed -i 's/${Version}/${{ env.VERSION }}/' template.yml
+
       - name: Publish Application
         id: publish
         run: |
@@ -41,11 +45,13 @@ jobs:
           result=$(sam publish --template .aws-sam/packaged.yaml)
           echo "Publish Result: $result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
-          echo "application=$arn" >> "$GITHUB_OUTPUT"
+          echo "Extracted ARN: $arn"
+          arn_trimmed=$(echo $arn | xargs)
+          echo "application_arn=$arn_trimmed" >> "$GITHUB_OUTPUT"
 
       - name: Test Output
         run: |
-          echo "ARN: ${{ steps.publish.outputs.application }}"
+          echo "ARN: ${{ steps.publish.outputs.application_arn }}"
 
 #      - name: Update Policy
 #        run: |
