@@ -52,6 +52,6 @@ jobs:
         run: |
           aws serverlessrepo put-application-policy \
           --application-id ${{ steps.publish.outputs.application_arn }} \
-          --statements PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
+          --statements Principals=*,PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
         env:
           AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
