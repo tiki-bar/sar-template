@@ -108,7 +108,7 @@ Assumes you already have AWS [Organization](https://aws.amazon.com/organizations
   {
     "Effect": "Allow",
     "Principal": {
-      "AWS": "arn:aws:iam::992382831795:role/GitHubSarPublish"
+      "AWS": "arn:aws:iam::{ARTIFACTS_ACCOUNT_ID}:role/GitHubSarPublish"
     },
     "Action": [
       "s3:ListBucket",
