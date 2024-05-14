@@ -43,21 +43,15 @@ jobs:
           sam build
           sam package --output-template-file .aws-sam/packaged.yaml
           result=$(sam publish --template .aws-sam/packaged.yaml)
-          echo "Publish Result: $result"
+          echo "$result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
-          echo "Extracted ARN: $arn"
           arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]')
-          echo "Cleaned ARN: $arn_clean"
           echo "application_arn=$arn_clean" >> "$GITHUB_OUTPUT"
 
-      - name: Test Output
+      - name: Share Application
         run: |
-          echo "ARN: ${{ steps.publish.outputs.application_arn }}"
-
-#      - name: Update Policy
-#        run: |
-#          aws serverlessrepo put-application-policy \
-#          --application-id \
-#          --statements PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
-#        env:
-#          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          aws serverlessrepo put-application-policy \
+          --application-id ${{ steps.publish.outputs.application_arn }}
+          --statements PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
+        env:
+          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
