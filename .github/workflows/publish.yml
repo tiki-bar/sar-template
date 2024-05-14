@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     permissions:
-      id-token: read
+      id-token: write
       contents: read
     steps:
       - uses: actions/checkout@v4
