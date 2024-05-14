@@ -2,6 +2,12 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 Description: Example SAR application for cross-org sharing
 
+Parameters:
+  Name:
+    Type: String
+    Description: The name of the example bucket to create
+    AllowedPattern: ^[a-z0-9-]+$
+
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: mytiki-sar-template
@@ -19,4 +25,4 @@ Resources:
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub mytiki-sar-template-${AWS::StackId}
+      BucketName: !Ref Name
