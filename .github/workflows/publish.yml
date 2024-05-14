@@ -37,8 +37,8 @@ jobs:
         run: |
           sam build
           sam package --output-template-file .aws-sam/packaged.yaml
-          result = $(sam publish --template .aws-sam/packaged.yaml)
-          echo "$result"
+          result=$(sam publish --template .aws-sam/packaged.yaml)
+          echo "Publish Result: $result"
           arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+')
           echo "application=$arn" >> $GITHUB_OUTPUT
 
