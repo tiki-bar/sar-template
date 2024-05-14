@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: Example SAR application for cross-org sharing
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-sar-template
+    Description: Example SAR application for cross-org sharing
+    Author: mytiki
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['sar', 'example']
+    HomePageUrl: https://github.com/tiki-bar/sar-template
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/tiki-bar/sar-template
+
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub mytiki-sar-template-${AWS::StackId}

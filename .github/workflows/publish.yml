@@ -1,0 +1,45 @@
+name: "Publish"
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: "us-east-2"
+
+jobs:
+  Publish:
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      id-token: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Publish Application
+        id: publish
+        run: |
+          sam build
+          sam package --output-template-file .aws-sam/packaged.yaml
+          echo "result=$(sam publish --template .aws-sam/packaged.yaml)" >> $GITHUB_OUTPUT
+
+      - name: Test Output
+        run: |
+          echo "Publish Result: ${{ steps.publish.outputs.result }}"
+          echo "ARN???"
+          echo "${{ steps.publish.outputs.result }}" | grep -oP 'arn:aws:serverlessrepo:[^ ]+'
+
+#      - name: Update Policy
+#        run: |
+#          aws serverlessrepo put-application-policy \
+#          --application-id \
+#          --statements PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
+#        env:
+#          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
