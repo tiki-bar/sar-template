@@ -27,7 +27,7 @@ jobs:
       - name: Assume Artifacts Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubOidc
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
           aws-region: ${{ env.AWS_REGION }}
           mask-aws-account-id: true
           role-chaining: true
